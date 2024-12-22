@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: #adb5bd;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            transition: all 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+            color: #fff;
+        }
+        .main-content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-custom {
+            background-color: #198754;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: #157347;
+        }
+    </style>
+</head>
+<body>
+    {% extends "base.html" %}
+
+    {% block title %}Modifier Personnel{% endblock %}
+    
+    {% block content %}
+    <div class="d-flex">
+        <!-- Main Content -->
+        <div class=" w-100">
+            <h1 class="text-center mb-4">Modifier Personnel</h1>
+            <div class="container form-container">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-custom">Enregistrer</button>
+                        <a href="{% url 'personnels' %}" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    
+</body>
+</html>

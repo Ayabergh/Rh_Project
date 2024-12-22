@@ -6,6 +6,7 @@ from .views import main_page
 urlpatterns = [
     path('', main_page, name='main_page'),
     path('personnels/', views.personnels, name='personnels'),  # Personnels view
-    path('list_personnel',views.afficher_Personnel, name='list_personnel'), 
-
+    path('personnels/add/', views.add_personnel, name='add_personnel'),  # Add personnel
+    path('personnels/update/<int:id>/', views.update_personnel, name='update_personnel'),
+    path('personnels/delete/<int:id>/', views.delete_personnel, name='delete_personnel'),
 ]
