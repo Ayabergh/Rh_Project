@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    
+</head>
+<body>
+ {% extends "base.html" %}
+
+{% block title %}Personnels{% endblock %}
+
+{% block content %}
+<h1>Personnels</h1>
+<p>Manage your personnels here.</p>
+
+<div class="container mt-4">
+    <h1 class="text-center">Liste des Personnels</h1>
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Poste</th>
+                <th>Compétences</th>
+                <th>Formation</th>
+                <th>Service</th>
+                <th>Date d'embauche</th>
+                <th>Adresse</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employe in personnels %}
+            <tr>
+                <td>{{ employe.id }}</td>
+                <td>{{ employe.name }}</td>
+                <td>{{ employe.Email }}</td>
+                <td>{{ employe.Phone }}</td>
+                <td>{{ employe.Position }}</td>
+                <td>{{ employe.skills }}</td>
+                <td>{{ employe.training }}</td>
+                <td>{{ employe.IdService }}</td> <!-- Adjust 'name' based on your Service model -->
+                <td>{{ employe.hireDate }}</td>
+                <td>{{ employe.Adresse }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10" class="text-center">Aucun employé trouvé.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+{% endblock %}
+</body>
+</html>
