@@ -72,11 +72,11 @@ li strong {
     <h2>Evaluations for {{ employee.name }}</h2>
 
     <form method="get" action="" class="flex justify-center items-center space-x-4">
-        <label for="period" class="text-lg font-medium text-gray-700">Select Period</label>
-        <select name="period" id="period" onchange="this.form.submit()" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            <option value="">All Periods</option>
-            <option value="annual">Annual</option>
-            <option value="semi_annual">Semi-Annual</option>
+        <label for="evaluation_type" class="text-lg font-medium text-gray-700">Select Evaluation Type</label>
+        <select name="evaluation_type" id="evaluation_type" onchange="this.form.submit()" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">All Evaluation Types</option>
+            <option value="Annual" {% if request.GET.evaluation_type == 'Annual' %}selected{% endif %}>Annual</option>
+            <option value="Semi-Annual" {% if request.GET.evaluation_type == 'Semi-Annual' %}selected{% endif %}>Semi-Annual</option>
         </select>
     </form>
     

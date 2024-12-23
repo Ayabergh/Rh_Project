@@ -76,6 +76,17 @@ def add_evaluation(request, employee_id):
     
     return render(request, 'evaluations/add_evaluation.html', {'form': form, 'employee': employee})
 
+def evaluation_list(request):
+    evaluations = Evaluation.objects.all()
+
+    # Filter by evaluation_type if selected
+    evaluation_type = request.GET.get('evaluation_type')
+    if evaluation_type:
+        evaluations = evaluations.filter(evaluation_type=evaluation_type)
+
+    # Render the filtered evaluations
+    return render(request, 'evaluation_list.html', {'evaluations': evaluations})
+
 
 def evaluation_report(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)
