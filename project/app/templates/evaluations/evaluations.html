@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+.btn-custom {
+    background-color: #08676F; /* Updated color */
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn-custom:hover {
+    background-color: #065b5c; /* Darker hover effect */
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #08676F; /* Set border color here */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+li strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+    </style>
+</head>
+<body>
+    {% extends "base.html" %}
+
+    {% block title %}Evaluations{% endblock %}
+    
+    {% block content %}
+    <h2>Evaluations for {{ employee.name }}</h2>
+
+    <form method="get" action="" class="flex justify-center items-center space-x-4">
+        <label for="period" class="text-lg font-medium text-gray-700">Select Period</label>
+        <select name="period" id="period" onchange="this.form.submit()" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">All Periods</option>
+            <option value="annual">Annual</option>
+            <option value="semi_annual">Semi-Annual</option>
+        </select>
+    </form>
+    
+    
+    <div >
+        <ul>
+    {% for eval in evaluations %}
+        <li>
+            <strong>Date:</strong> {{ eval.date }} <br>
+            <strong>Evaluation Type:</strong> {{ eval.get_evaluation_type_display }} <br>
+            <strong>Objectives:</strong> {{ eval.objectives }} <br>
+            <strong>Rating:</strong> {{ eval.performance_rating }} <br>
+            <strong>Skills Developed:</strong> {{ eval.skills_developed }} <br>
+            <strong>Comments:</strong> {{ eval.comments }} <br>
+            <strong>Criteria:</strong> {{ eval.criteria }} <br>  
+            <p>
+                <a href="{% url 'evaluation_report' eval.id %}" class="btn-dark">Download Report</a>
+            </p>
+        </li>
+    {% endfor %}
+</ul>
+
+    </div>
+    
+    <a href="{% url 'add_evaluation' employee.id %}" class="btn-custom">Add Evaluation</a>
+    {% endblock %}
+
+</body>
+</html>

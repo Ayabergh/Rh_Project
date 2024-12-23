@@ -1,7 +1,10 @@
+from django.http import FileResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Personnel
-from .forms import PersonnelForm
+from .report_utils import generate_evaluation_report
+from .models import Evaluation, Personnel
+from .forms import EvaluationForm, PersonnelForm
 # Create your views here.
+
 def main_page(request):
     return render(request, 'main/index.html')
 
@@ -47,3 +50,34 @@ def add_personnel(request):
     else:
         form = PersonnelForm()
     return render(request, 'employee/add_personnel.html', {'form': form})
+
+
+def evaluations(request, employee_id):
+    employee = get_object_or_404(Personnel, id=employee_id)
+    period = request.GET.get('period')
+    if period:
+        evaluations = Evaluation.objects.filter(employee=employee, period=period)
+    else:
+        evaluations = Evaluation.objects.filter(employee=employee)
+    return render(request, 'evaluations/evaluations.html', {'employee': employee, 'evaluations': evaluations})
+
+
+def add_evaluation(request, employee_id):
+    employee = get_object_or_404(Personnel, id=employee_id)
+    if request.method == 'POST':
+        form = EvaluationForm(request.POST)
+        if form.is_valid():
+            evaluation = form.save(commit=False)
+            evaluation.employee = employee
+            evaluation.save()
+            return redirect('evaluations', employee_id=employee.id)
+    else:
+        form = EvaluationForm()
+    
+    return render(request, 'evaluations/add_evaluation.html', {'form': form, 'employee': employee})
+
+
+def evaluation_report(request, evaluation_id):
+    evaluation = get_object_or_404(Evaluation, id=evaluation_id)
+    filename = generate_evaluation_report(evaluation)
+    return FileResponse(open(filename, 'rb'), as_attachment=True, filename=filename)

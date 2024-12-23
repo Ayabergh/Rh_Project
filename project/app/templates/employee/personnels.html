@@ -11,6 +11,7 @@
             /* Hide the print button */
             .btn, .btn-primary {
                 display: none;
+                
             }
     
             /* Optionally, hide other page elements (like headers or footers) */
@@ -101,6 +102,7 @@
                 <td>
                     <a href="{% url 'update_personnel' employe.id %}" class="btn text-primary btn-sm text-decoration-underline">Modifier</a>
                     <a href="{% url 'delete_personnel' employe.id %}" class="btn text-danger btn-sm text-decoration-underline">Supprimer</a>
+                    <a href="{% url 'evaluations' employe.id %}" class="btn btn-dark btn-sm">Voir évaluations</a>
                 </td>
             </tr>
             {% empty %}

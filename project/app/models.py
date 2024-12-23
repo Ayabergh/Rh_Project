@@ -24,6 +24,21 @@ class Personnel(models.Model):
         return self.name
 
 
+class Evaluation(models.Model):
+    employee = models.ForeignKey(Personnel, on_delete=models.CASCADE, related_name="evaluations")
+    date = models.DateField(auto_now_add=True)
+    evaluation_type = models.CharField(
+        max_length=20,
+        choices=[('Annual', 'Annual'), ('Semi-Annual', 'Semi-Annual')],
+        default='Annual'
+    )
+    criteria = models.JSONField(default=dict)  # Customizable evaluation criteria in JSON format
+    performance_rating = models.IntegerField()  # Performance rating, e.g., 1-10
+    skills_developed = models.TextField(blank=True)  # Optional field for developed skills
+    comments = models.TextField(blank=True)  # Manager's comments
 
-    
+    def __str__(self):
+        return f"Evaluation for {self.employee.name} on {self.date}"
+
+
 

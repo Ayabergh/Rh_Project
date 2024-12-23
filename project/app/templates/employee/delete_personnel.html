@@ -6,8 +6,13 @@
     <title>Document</title>
 </head>
 <body>
+    {% extends "base.html" %}
+
+    {% block title %}Evaluations{% endblock %}
+    
+    {% block content %}
     <div class="container mt-4">
-        <h1 class="text-center text-danger">Supprimer Personnel</h1>
+        <h1 class="text-center text-dark">Supprimer Personnel</h1>
         <p>Êtes-vous sûr de vouloir supprimer {{ personnel.name }} ?</p>
         <form method="post">
             {% csrf_token %}
@@ -15,5 +20,6 @@
             <a href="{% url 'personnels' %}" class="btn btn-secondary">Annuler</a>
         </form>
     </div>
+    {% endblock %}
 </body>
 </html>
