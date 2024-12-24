@@ -1,8 +1,8 @@
-from django.http import FileResponse
+from django.http import FileResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .report_utils import generate_evaluation_report
-from .models import Evaluation, Personnel
-from .forms import EvaluationForm, PersonnelForm
+from .models import Conge, Evaluation, Personnel
+from .forms import CongeForm, EvaluationForm, PersonnelForm
 # Create your views here.
 
 def main_page(request):
@@ -92,3 +92,48 @@ def evaluation_report(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)
     filename = generate_evaluation_report(evaluation)
     return FileResponse(open(filename, 'rb'), as_attachment=True, filename=filename)
+
+
+
+def liste_conges(request):
+    conges = Conge.objects.all()
+    return render(request, 'conges/liste_conges.html', {'conges': conges})
+
+def ajouter_conge(request):
+    if request.method == 'POST':
+        form = CongeForm(request.POST)
+        if form.is_valid():
+            # Retrieve the employe object from the form
+            employe = form.cleaned_data['employe_identifier']
+            conge = form.save(commit=False)  # Do not save yet
+            conge.employe = employe  # Set the employe
+            conge.save()  # Now save with the correct employe
+            return redirect('liste_conges')  # Redirect to a success page
+    else:
+        form = CongeForm()
+    return render(request, 'conges/ajouter_conge.html', {'form': form})
+
+
+
+def modifier_conge(request, id):
+    conge = get_object_or_404(Conge, id=id)
+    if request.method == 'POST':
+        form = CongeForm(request.POST, instance=conge)
+        if form.is_valid():
+            form.save()
+            return redirect('liste_conges')
+    else:
+        form = CongeForm(instance=conge)
+    return render(request, 'conges/modifier_conge.html', {'form': form})
+
+def supprimer_conge(request, id):
+    conge = get_object_or_404(Conge, id=id)
+    conge.delete()
+    return redirect('liste_conges')
+
+def autocomplete_personnel(request):
+    if 'term' in request.GET:
+        qs = Personnel.objects.filter(name__icontains=request.GET['term'])
+        names = list(qs.values_list('name', flat=True))
+        return JsonResponse(names, safe=False)
+    return JsonResponse([], safe=False)

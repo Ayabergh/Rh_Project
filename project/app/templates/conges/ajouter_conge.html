@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Congé</title>
+    <style>
+        /* Include the same styles as provided in the layout */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .frame-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+            max-width: 800px;
+            border: 2px solid #08676F;
+        }
+        .btn-custom {
+            background-color: #08676F;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn-custom:hover {
+            background-color: #065b5c;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        form input, form select, form textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background-color: #f4f4f4;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        form input:focus, form select:focus, form textarea:focus {
+            border-color: #08676F;
+            outline: none;
+        }
+        form button {
+            padding: 12px 15px;
+            background-color: #08676F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        form button:hover {
+            background-color: #065b5c;
+        }
+    </style>
+</head>
+<body>
+    {% extends "base.html" %}
+    
+    {% block title %}Conges{% endblock %}
+    
+    {% block content %}
+    <div class="main-content">
+        <h1>Ajouter un Congé</h1>
+        <div class="frame-container">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.employe_identifier.label_tag }} <br>
+                {{ form.employe_identifier }} <br>
+                {{ form.employe_identifier.help_text }} <br><br>
+                
+                {{ form.as_p }}
+                <button type="submit" class="btn-custom">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+    
+</body>
+</html>

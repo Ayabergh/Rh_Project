@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @media print {
+            /* Hide the print button */
+            .btn, .btn-primary {
+                display: none;
+            }
+
+            /* Optionally, hide other page elements (like headers or footers) */
+            .container h1 {
+                display: none;  /* Hide the page title */
+            }
+
+            /* Optional: Adjust table styling for better printing */
+            table {
+                width: 100%;
+                border: 1px solid #000;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                padding: 8px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
+
+            thead {
+                background-color: #f2f2f2;
+            }
+
+            /* Optionally adjust other page layout or formatting */
+        }
+    </style>
+</head>
+<body>
+    {% extends "base.html" %}
+
+    {% block title %}Conges{% endblock %}
+
+    {% block content %}
+    <div class="container mt-4">
+        <h1 class="text-center">Gestion des Congés</h1>
+
+        <div class="mb-4 text-center">
+            <a href="{% url 'ajouter_conge' %}" class="btn btn-dark">Ajouter un Congé</a>
+        </div>
+
+        <div id="printableArea">
+            <table class="table table-bordered table-striped mt-4">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Employé</th>
+                        <th>Type</th>
+                        <th>Date de Début</th>
+                        <th>Date de Fin</th>
+                        <th>Jours Utilisés</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for conge in conges %}
+                    <tr>
+                        <td>{{ conge.employe.name }}</td>
+                        <td>{{ conge.get_type_conge_display }}</td>
+                        <td>{{ conge.date_debut }}</td>
+                        <td>{{ conge.date_fin }}</td>
+                        <td>{{ conge.jours_utilises }}</td>
+                        <td>
+                            <a href="{% url 'modifier_conge' conge.id %}" class="btn text-primary btn-sm text-decoration-underline">Modifier</a>
+                            <a href="{% url 'supprimer_conge' conge.id %}" class="btn text-danger btn-sm text-decoration-underline">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">Aucun congé trouvé.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4">
+            <button onclick="printTable()" class="btn btn-dark mb-3">Imprimer la Liste des Congés</button>
+        </div>
+    </div>
+
+    <script>
+        function printTable() {
+            var printContent = document.getElementById('printableArea').innerHTML;  // Get the content of the table
+            var originalContent = document.body.innerHTML;  // Save the original content of the page
+            
+            document.body.innerHTML = printContent;  // Replace the page content with the table
+            window.print();  // Trigger the print dialog
+            
+            document.body.innerHTML = originalContent;  // Restore the original content after printing
+        }
+    </script>
+    {% endblock %}
+
+</body>
+</html>
